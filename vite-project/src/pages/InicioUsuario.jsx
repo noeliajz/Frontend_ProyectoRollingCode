@@ -7,7 +7,7 @@ import CardInicio from "../components/CardInicio"; // Ajusta la ruta según sea 
 import Spinner from 'react-bootstrap/Spinner'
 import Card from "react-bootstrap/Card";
 
-const Inicio = () => {
+const InicioUsuario = () => {
   const [personaje, setPersonaje] = useState({});
   const [mostrarSpinner, setMostrarSpinner] = useState(true)
 
@@ -48,4 +48,4 @@ const componenteRenderizado = (mostrarSpinner)? (<div className="text-center py-
   );
 };
 
-export default Inicio;
+export default InicioUsuario;

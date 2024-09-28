@@ -8,9 +8,8 @@ import Form from "react-bootstrap/Form";
 const FormularioRegistrar = () => {
   return (
     <>
-      <div style={{background:"#E8FCF6"}}>
-      <Container style={{background:"#FFF07A"}} className="m-5">
-        <Row>
+      <Container className="m-5" style={{background:"#E8FCF6"}}>
+        <Row className="justify-content-center">
           <Col sm={12} md={8} lg={9}>
             <Form className="text-center">
               <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -30,7 +29,6 @@ const FormularioRegistrar = () => {
           </Col>
         </Row>
       </Container>
-      </div>
     </>
   );
 };

@@ -5,14 +5,14 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Menu = () => {
   return (
     <>
     <Navbar expand="lg"  style={{ background: "#016A70" }}>
       <Container fluid>
-        <Navbar.Brand href="#" style={{color: "#D2DE32"}}>Control de stock</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/" style={{color: "#D2DE32"}}>Control de stock</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -20,11 +20,11 @@ const Menu = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="/" style={{color: "#FFFFDD"}}>Inicio</Nav.Link>
-            <Nav.Link href="#action2" style={{color: "#FFFFDD"}}>Quien soy</Nav.Link>
-            <Nav.Link href="/Error404" style={{color: "#FFFFDD"}}>Contacto</Nav.Link>
-            <Nav.Link href="/Registrar" style={{color: "#FFFFDD"}}>Registrarse</Nav.Link>
-            <Nav.Link href="/IniciarSesion" style={{color: "#FFFFDD"}}>Iniciar sesión</Nav.Link>
+            <NavLink end className='nav-item nav-link' to="/" style={{color: "#FFFFDD"}}>Inicio</NavLink>
+            <NavLink end className='nav-item nav-link' to="#action2" style={{color: "#FFFFDD"}}>Quien soy</NavLink>
+            <NavLink end className='nav-item nav-link' to="/Contacto" style={{color: "#FFFFDD"}}>Contacto</NavLink>
+            <NavLink end className='nav-item nav-link' to="/Registrar" style={{color: "#FFFFDD"}}>Registrarse</NavLink>
+            <NavLink end className='nav-item nav-link' to="/IniciarSesion" style={{color: "#FFFFDD"}}>Iniciar sesión</NavLink>
           </Nav>
           <Form className="d-flex">
             <Form.Control
