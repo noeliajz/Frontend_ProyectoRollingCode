@@ -18,7 +18,6 @@ const RutasDeVistas = () => {
     <Route path='*' element={<PaginaError404/>}/>
     <Route path='/Registrar' element={<Registrar/>}/>
     <Route path='/IniciarSesion' element={<IniciarSesion/>}/>
-    <Route path='/IniciarSesion' element={<IniciarSesion/>}/>
     <Route path='/InicioAdmin' element={<InicioAdmin/>}/>
     <Route path='/ProductosAdmin' element={<ProductosAdmin/>}/>
     <Route path='/Contacto' element={<Contacto/>}/>
