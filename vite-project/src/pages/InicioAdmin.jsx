@@ -9,7 +9,7 @@ const InicioAdmin = () => {
   const [refreshUsers, setRefreshUsers] = useState(false);
 
   const obtenerTodosLosUsuarios = async () => {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
     try {
       const res = await fetch("http://localhost:4000/apiStock/usuario", {
