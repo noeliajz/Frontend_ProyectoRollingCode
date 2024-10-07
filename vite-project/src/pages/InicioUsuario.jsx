@@ -3,35 +3,43 @@ import Menu from "../components/menu";
 import Footer from "../components/Footer";
 import Carrusel from "../components/Carrusel";
 import CarruselPago from "../components/CarruselPago";
-import CardInicio from "../components/CardInicio"; // Ajusta la ruta según sea necesario
-import Spinner from 'react-bootstrap/Spinner'
 import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button"; // Asegúrate de importar Button si lo usas
 
 const InicioUsuario = () => {
-  const [personaje, setPersonaje] = useState({});
-  const [mostrarSpinner, setMostrarSpinner] = useState(true)
+  const [productosTodos, setProductos] = useState([]);
+  const [refreshProductos, setRefreshProductos] = useState(false);
 
   useEffect(() => {
-    consultarApi();
-  }, []);
+    obtenerTodosLosProductos();
+  }, [refreshProductos]);
 
-  const consultarApi = async () => {
+  const obtenerTodosLosProductos = async () => {
+    const token = localStorage.getItem("token");
+
     try {
-      setMostrarSpinner(true)
-      const respuesta = await fetch(
-        "https://thesimpsonsquoteapi.glitch.me/quotes"
-      );
-      const dato = await respuesta.json();
-      console.log(respuesta);
-      console.log(dato);
-      setPersonaje(dato[0])
-      setMostrarSpinner(false)
+      const res = await fetch("http://localhost:4000/apiStock/producto", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(errorText);
+      }
+
+      const data = await res.json();
+      console.log("Productos obtenidos:", data); // Verifica la estructura de los datos
+      setProductos(data.productos || []); // Asegúrate de que sea un array
     } catch (error) {
-      console.log(error)
+      console.error("Error fetching products:", error);
+      setProductos([]); // Asegúrate de que siempre sea un array
     }
   };
-const componenteRenderizado = (mostrarSpinner)? (<div className="text-center py-5"><Spinner animation="border" variant="success"  /></div>)
-: <CardInicio personaje={personaje} />
+
   return (
     <>
       <Menu />
@@ -40,8 +48,26 @@ const componenteRenderizado = (mostrarSpinner)? (<div className="text-center py-
         <h3 className="p-4">Formas de pago</h3>
         <CarruselPago />
         <h3 className="p-4">Accede a todos nuestros productos</h3>
-        {componenteRenderizado}
-        <button onClick={consultarApi}>Ver más</button>
+        <div className="d-flex flex-wrap justify-content-around">
+          {Array.isArray(productosTodos) && productosTodos.length > 0 ? (
+            productosTodos.map((producto, index) => (
+              <Card key={producto._id} style={{ width: "18rem", margin: "10px" }}>
+                <Card.Img variant="top" src={producto.imagen} alt={producto.nombre} />
+                <Card.Body>
+                  <Card.Title>{producto.nombre}</Card.Title>
+                  <Card.Text>
+                    Precio: {producto.precio}
+                    <br />
+                    Descripción: {producto.descripcion}
+                  </Card.Text>
+                  <Button variant="primary">Comprar</Button>
+                </Card.Body>
+              </Card>
+            ))
+          ) : (
+            <p>No se encontraron productos.</p>
+          )}
+        </div>
       </div>
       <Footer />
     </>
