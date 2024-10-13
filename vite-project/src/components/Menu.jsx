@@ -8,6 +8,25 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, NavLink } from 'react-router-dom';
 
 const Menu = () => {
+  const parseJSON = (str) => {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      return str;     }
+  };
+  const token = parseJSON(localStorage.getItem("token")) || "";
+  const rol = parseJSON(localStorage.getItem("rol")) || "";
+  console.log("Token:", token);
+  console.log("Rol:", rol);
+
+  const CerrarSesion = () => {
+    localStorage.removeItem("idUser");
+    localStorage.removeItem("token");
+    localStorage.removeItem("rol");
+    setUserAdmin(false);
+    location.href = "/";
+  };
+
   return (
     <>
     <Navbar expand="lg"  style={{ background: "#016A70" }}>
@@ -20,12 +39,32 @@ const Menu = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
+            { rol === "admin" && (
+              <>
             <NavLink end className='nav-item nav-link' to="/" style={{color: "#FFFFDD"}}>Inicio</NavLink>
-            <NavLink end className='nav-item nav-link' to="#action2" style={{color: "#FFFFDD"}}>Quien soy</NavLink>
-            <NavLink end className='nav-item nav-link' to="/Contacto" style={{color: "#FFFFDD"}}>Contacto</NavLink>
-            <NavLink end className='nav-item nav-link' to="/Registrar" style={{color: "#FFFFDD"}}>Registrarse</NavLink>
-            <NavLink end className='nav-item nav-link' to="/IniciarSesion" style={{color: "#FFFFDD"}}>Iniciar sesión</NavLink>
+            <NavLink end className='nav-item nav-link' to="#action2" style={{color: "#FFFFDD"}}>Productos</NavLink>
+            <NavLink end className='nav-item nav-link' to="#action2" style={{color: "#FFFFDD"}}>Cuentas</NavLink>        
+            <Nav.Link href="/" onClick={() => CerrarSesion()} style={{color: "#FFFFDD"}}>Cerrar sesión</Nav.Link>     
+              </>
+             )}
           </Nav>
+          <Nav>
+            {( rol !== "admin" && rol !== "user" ) && (
+              <>
+                <Nav.Link href="/Registrar" style={{color: "#FFFFDD"}}>Registrarse</Nav.Link>
+                <Nav.Link eventKey={2} href="/IniciarSesion" style={{color: "#FFFFDD"}}>Iniciar sesión</Nav.Link>
+              </>
+            )}
+          </Nav> 
+          <Nav>
+            {(  rol === "user" ) && (
+              <>
+                <Nav.Link href="/" style={{color: "#FFFFDD"}}>Inicio</Nav.Link>
+                <Nav.Link eventKey={2} href="/" style={{color: "#FFFFDD"}}>Comprar</Nav.Link>
+                <Nav.Link href="/" onClick={() => CerrarSesion()} style={{color: "#FFFFDD"}}>Cerrar sesión</Nav.Link>     
+              </>
+            )}
+          </Nav> 
           <Form className="d-flex">
             <Form.Control
               type="search"
