@@ -26,11 +26,11 @@ const InicioAdmin = () => {
       }
 
       const data = await res.json();
-      console.log("Usuarios obtenidos:", data); // Verifica la estructura de los datos
-      setUsers(data.allUsers || data || []); // Ajusta si es necesario con base en la respuesta del backend
+      console.log("Usuarios obtenidos:", data); 
+      setUsers(data.allUsers || data || []); 
     } catch (error) {
       console.error("Error fetching users:", error);
-      setUsers([]); // Asegúrate de que siempre sea un array en caso de error
+      setUsers([]); 
     }
   };
 

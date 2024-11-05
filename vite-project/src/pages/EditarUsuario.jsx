@@ -21,7 +21,7 @@ const EditarUsuario = () => {
   });
 
   const ObtenerUnUsuario = async () => {
-    const token = JSON.parse(localStorage.getItem("token"));
+    const token = localStorage.getItem("token"); // Sin JSON.parse
     const res = await fetch(
       `http://localhost:8080/apiStock/usuario/${params.id}`,
       {
@@ -32,7 +32,7 @@ const EditarUsuario = () => {
         },
       }
     );
-
+  
     const { getUsuario } = await res.json();
     setFormValues({
       nombres: getUsuario.nombres,
@@ -43,18 +43,11 @@ const EditarUsuario = () => {
       pago: getUsuario.pago,
     });
   };
-
-  const handleChange = (ev) => {
-    setFormValues({ ...formValues, [ev.target.name]: ev.target.value });
-    if (formValues.name) {
-      setInputCheckName(false);
-    }
-  };
-
+  
   const handleClick = async (ev) => {
     ev.preventDefault();
-    const token = JSON.parse(localStorage.getItem("token"));
-
+    const token = localStorage.getItem("token");
+  
     if (
       formValues.nombres === "" &&
       formValues.apellido === "" &&
@@ -68,24 +61,30 @@ const EditarUsuario = () => {
         title: "Oops...",
         text: "Formulario Vacio!",
       });
-    } else if (formValues.name === "") {
-      setInputCheckName(true);
-    } else {
-      const res = await fetch(`http://localhost:8080/api/usuario/${params.id}`, {
+      return;
+    }
+  
+    try {
+      const res = await fetch(`http://localhost:8080/apiStock/usuario/${params.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          nombres: formValues.nombres,
-          apellido: formValues.apellido,
-          rol: formValues.rol,
-          email: formValues.email,
-          contrasenia: formValues.contrasenia,
-          pago: formValues.pago,
-        }),
+        body: JSON.stringify(formValues),
       });
+  
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Error en la solicitud: ${errorText}`);
+      }
+  
+      // Comprueba que el contenido es JSON antes de parsear
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("La respuesta no es JSON");
+      }
+  
       const resUpdateUser = await res.json();
       if (resUpdateUser.status === 200) {
         Swal.fire("Usuario editado correctamente!", "success");
@@ -99,11 +98,27 @@ const EditarUsuario = () => {
         pago: "",
       });
       setTimeout(() => {
-        navigate("/adminPage");
+        navigate("/inicioAdmin");
       }, 1000);
+  
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Ocurrió un error",
+        text: error.message,
+      });
+      console.error("Error al actualizar usuario:", error);
+    }
+  };
+  
+  const handleChange = (ev) => {
+    setFormValues({ ...formValues, [ev.target.name]: ev.target.value });
+    if (formValues.name) {
+      setInputCheckName(false);
     }
   };
 
+ 
   useEffect(() => {
     ObtenerUnUsuario();
   }, []);
@@ -188,7 +203,7 @@ const EditarUsuario = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    Email
+                    Contrasenia
                   </label>
                   <input
                     type="password"
