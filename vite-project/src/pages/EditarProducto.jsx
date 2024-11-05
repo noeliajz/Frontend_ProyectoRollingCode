@@ -49,9 +49,9 @@ const EditarProducto = () => {
     }
   };
 
-  const handleClick = async (ev) => {
+ /*  const handleClick = async (ev) => {
     ev.preventDefault();
-    const token = JSON.parse(localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
 
     if (
       formValues.nombre === "" &&
@@ -100,7 +100,77 @@ const EditarProducto = () => {
         navigate("/adminPage");
       }, 1000);
     }
+  }; */
+
+  const handleClick = async (ev) => {
+    ev.preventDefault();
+    const token = localStorage.getItem("token");
+  
+    if (
+      formValues.nombre === "" &&
+      formValues.precio === "" &&
+      formValues.categoria === "" &&
+      formValues.descripcion === "" &&
+      formValues.fecha === "" &&
+      formValues.imagen === ""
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Formulario Vacio!",
+      });
+      return;
+    }
+  
+    try {
+      const res = await fetch(`http://localhost:8080/apiStock/producto/${params.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formValues),
+      });
+  
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Error en la solicitud: ${errorText}`);
+      }
+  
+      // Comprueba que el contenido es JSON antes de parsear
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        throw new Error("La respuesta no es JSON");
+      }
+  
+      const resUpdateUser = await res.json();
+      if (resUpdateUser.status === 200) {
+        Swal.fire("Usuario editado correctamente!", "success");
+      }
+      setFormValues({
+        nombre: "",
+        precio: "",
+        categoria: "",
+        descripcion: "",
+        fecha: "",
+        imagen: ""
+      });
+      setTimeout(() => {
+        navigate("/inicioAdmin");
+      }, 1000);
+  
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Ocurrió un error",
+        text: error.message,
+      });
+      console.error("Error al actualizar producto:", error);
+    }
   };
+
+
+
 
   useEffect(() => {
     ObtenerUnUsuario();
@@ -116,7 +186,7 @@ const EditarProducto = () => {
               <form className="text-center p-5 w-50 ">
                 <div >
                   <label for="exampleInputEmail1" className="form-label">
-                    Nombre
+                    Ingresar Nombre
                   </label>
                   <input
                     type="text"
@@ -134,7 +204,7 @@ const EditarProducto = () => {
                 </div>
                 <div >
                   <label for="exampleInputEmail1" className="form-label">
-                    Precio
+                    Ingresar Precio
                   </label>
                   <input
                     type="number"
@@ -152,7 +222,7 @@ const EditarProducto = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    categoria
+                    Ingresar categoria
                   </label>
                   <input
                     type="text"
@@ -169,7 +239,7 @@ const EditarProducto = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    Descripción
+                    Ingresar descripción
                   </label>
                   <input
                     type="text"
@@ -186,7 +256,7 @@ const EditarProducto = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    Fecha
+                    Ingresar Fecha en el formato AAAA/MM/DD
                   </label>
                   <input
                     type="text"
@@ -203,7 +273,7 @@ const EditarProducto = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    Imagen
+                    Ingresar dirección de la imagen
                   </label>
                   <input
                     type="text"
@@ -222,7 +292,7 @@ const EditarProducto = () => {
                 <button
                   type="submit"
                   className="btn mt-4"
-                  style={{ background: "#0E46A3", color: "#E1F7F5" }}
+                  style={{ background: "#000000", color: "#CCFF01" }}
                   onClick={handleClick}
                 >
                   Guardar

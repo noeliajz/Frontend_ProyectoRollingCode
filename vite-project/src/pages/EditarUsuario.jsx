@@ -126,14 +126,14 @@ const EditarUsuario = () => {
   return (
     <>
       <Menu />
-      <Container fluid style={{ background: "#E1F7F5" }}>
+      <Container fluid style={{ background: "#FFFFFF" }}>
         <Row>
           <Col className="d-flex" sm={12} md={10} lg={10}>
             <section className="conteiner w-100 d-flex justify-content-center pb-5 styleUserAdminPage">
               <form className="text-center p-5 w-50 ">
                 <div >
                   <label for="exampleInputEmail1" className="form-label">
-                    Nombres
+                    Ingresar Nombres
                   </label>
                   <input
                     type="text"
@@ -151,7 +151,7 @@ const EditarUsuario = () => {
                 </div>
                 <div >
                   <label for="exampleInputEmail1" className="form-label">
-                    Apellido
+                    Ingresar Apellido
                   </label>
                   <input
                     type="text"
@@ -169,7 +169,7 @@ const EditarUsuario = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    Rol
+                    Ingresar Rol
                   </label>
                   <input
                     type="text"
@@ -186,7 +186,7 @@ const EditarUsuario = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    Email
+                   Ingresar Email
                   </label>
                   <input
                     type="email"
@@ -203,7 +203,7 @@ const EditarUsuario = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    Contrasenia
+                    Ingresar Contraseña
                   </label>
                   <input
                     type="password"
@@ -220,7 +220,7 @@ const EditarUsuario = () => {
                 </div>
                 <div >
                   <label for="exampleInputPassword1" className="form-label">
-                    Pago
+                   Ingresar Pago
                   </label>
                   <input
                     type="text"
@@ -239,7 +239,7 @@ const EditarUsuario = () => {
                 <button
                   type="submit"
                   className="btn mt-4"
-                  style={{ background: "#0E46A3", color: "#E1F7F5" }}
+                  style={{ background: "#000000", color: "#CCFF01" }}
                   onClick={handleClick}
                 >
                   Guardar

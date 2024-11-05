@@ -27,7 +27,7 @@ const RutasDeVistas = () => {
     <Route path='/InicioUsuario' element={<InicioUsuario/>}/>
     <Route path='/CuentasAdmin' element={<CuentasAdmin/>}/>
     <Route path='/EditarUsuario/:id' element={<EditarUsuario/>}/>
-    <Route path='/EditarProducto' element={<EditarProducto/>}/>
+    <Route path='/EditarProducto/:id' element={<EditarProducto/>}/>
     <Route path='/Carrito' element={<Carrito/>}/>
 
    
