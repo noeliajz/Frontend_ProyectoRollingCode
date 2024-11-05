@@ -8,7 +8,7 @@ import IconoErizo from "../assets/IconoErizo.png";
 function Footer() {
   return (
     <>
-      <Container fluid style={{ background: "#A2C579", height:"450px"}}>
+      <Container fluid style={{ background: "#000000", height:"450px"}}>
         <Row >
           <Col className="d-flex justify-content-center">
             <img src={IconoErizo} alt="" width="90px" height="90px" />
@@ -21,7 +21,7 @@ function Footer() {
                 <Link
                   to="/Error404"
                   className="fs-4"
-                  style={{ color: "#E1F7F5", textShadow: "0 0 3px #9AC8CD", textDecoration:"none" }}
+                  style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD", textDecoration:"none" }}
                 >
                   Información
                 </Link>
@@ -30,9 +30,36 @@ function Footer() {
                 <Link
                   to="/Error404"
                   className="fs-4"
-                  style={{ color: "#E1F7F5", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
+                  style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
                 >
                   Ayuda
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to="/Error404"
+                  className="fs-4"
+                  style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
+                >
+                  Sugerencias
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to="/Error404"
+                  className="fs-4"
+                  style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
+                >
+                  Reclamos
+                </Link>
+              </div>
+              <div>
+                <Link
+                  to="/Error404"
+                  className="fs-4"
+                  style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
+                >
+                  Trabajá con nosotros
                 </Link>
               </div>
             </div>
@@ -43,7 +70,7 @@ function Footer() {
                 <Link
                   to="/Error404"
                   className="fs-4"
-                  style={{ color: "#E1F7F5", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none"}}
+                  style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none"}}
                 >
                   Preguntas frecuentes
                 </Link>
@@ -52,7 +79,7 @@ function Footer() {
                 <Link
                   to="/Error404"
                   className="fs-4"
-                  style={{ color: "#E1F7F5", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
+                  style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
                 >
                   Cómo comprar
                 </Link>
@@ -64,7 +91,7 @@ function Footer() {
               <Link
                 to="/Error404"
                 className="fs-4"
-                style={{ color: "#E1F7F5", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
+                style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none" }}
               >
                 Políticas de privacidad
               </Link>
@@ -75,9 +102,17 @@ function Footer() {
               <Link
                 to="/Error404"
                 className="fs-4"
-                style={{ color: "#E1F7F5", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none"}}
+                style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none"}}
               >
                 Ubicación
+              </Link>
+            </div>
+            <div className="p-4">
+              <Link
+                to="/Error404"
+                className="fs-4"
+                style={{ color: "#CCFF01", textShadow: "0 0 3px #9AC8CD" , textDecoration:"none"}}
+              >                
               </Link>
             </div>
           </Col>

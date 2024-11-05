@@ -33,37 +33,47 @@ const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
         setUsuarioInput(false);
         setContraseniaInput(false);
         try {
-          const res = await fetch(
-            "http://localhost:4000/apiStock/iniciarSesion",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: formInputs.email,
-                contrasenia: formInputs.contrasenia,
-              }),
-            }
-          );
+          const res = await fetch("http://localhost:8080/apiStock/usuario/iniciarSesion", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: formInputs.email,
+              contrasenia: formInputs.contrasenia,
+            }),
+          });
+  
           const data = await res.json();
-          console.log(data);
-          if (data.usuarioExist) {
-            localStorage.setItem("token", data.usuarioExist.token);
-            localStorage.setItem("rol", data.usuarioExist.rol);
-            localStorage.setItem("nombres", data.usuarioExist.nombres);
-            console.log("Usuario logueado:", data.usuarioExist);
-            if (data.usuarioExist.rol === "admin") {
-              navigate("/InicioAdmin");
-            } else if (data.usuarioExist.rol === "user") {
-              navigate("/");
+  
+          if (res.ok) {
+            if (data.usuarioExist) {
+              localStorage.setItem("token", data.usuarioExist.token);
+              localStorage.setItem("rol", data.usuarioExist.rol);
+              localStorage.setItem("nombres", data.usuarioExist.nombres);
+  
+              if (data.usuarioExist.rol === "admin") {
+                navigate("/InicioAdmin");
+              } else if (data.usuarioExist.rol === "user") {
+                navigate("/");
+              }
+            } else {
+              Swal.fire({
+                position: "center",
+                icon: "error",
+                title: "Error en la solicitud de login",
+                text: "Usuario no encontrado o credenciales incorrectas",
+                showConfirmButton: false,
+                timer: 1380,
+              });
             }
           } else {
+            // Maneja los errores específicos según el código de estado
             Swal.fire({
               position: "center",
               icon: "error",
-              title: "Error en la solicitud de login",
-              text: "Usuario no encontrado o credenciales incorrectas",
+              title: "Error",
+              text: data.mensaje || "Usuario o contraseña incorrectos",
               showConfirmButton: false,
               timer: 1380,
             });
@@ -87,6 +97,7 @@ const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
       setContraseniaInput(true);
     }
   };
+  
 
   useEffect(() => {
     console.log(formInputs);

@@ -3,7 +3,7 @@ const token = localStorage.getItem('token')
 
 
 const clienteAxios = axios.create({
- baseURL: 'http://localhost:4000/apiStock/'
+ baseURL: 'http://localhost:8080/apiStock/'
 
 })
 

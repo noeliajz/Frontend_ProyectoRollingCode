@@ -18,10 +18,6 @@ const CardInicio = ({ personaje }) => {
           </Card.Body>
         </Card>
       </CardGroup>
-      {/* <div>
-      <h4>{personaje.quote}</h4>
-      <p>- {personaje.image}</p>
-    </div> */}
     </>
   );
 };

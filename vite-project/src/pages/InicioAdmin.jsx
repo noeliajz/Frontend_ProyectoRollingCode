@@ -9,10 +9,10 @@ const InicioAdmin = () => {
   const [refreshUsers, setRefreshUsers] = useState(false);
 
   const obtenerTodosLosUsuarios = async () => {
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch("http://localhost:4000/apiStock/usuario", {
+      const res = await fetch("http://localhost:8080/apiStock/usuario", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -27,16 +27,15 @@ const InicioAdmin = () => {
 
       const data = await res.json();
       console.log("Usuarios obtenidos:", data); // Verifica la estructura de los datos
-      setUsers(data.allUsers || data || []); // Asegúrate de que sea un array
+      setUsers(data.allUsers || data || []); // Ajusta si es necesario con base en la respuesta del backend
     } catch (error) {
       console.error("Error fetching users:", error);
-      setUsers([]); // Asegúrate de que siempre sea un array
+      setUsers([]); // Asegúrate de que siempre sea un array en caso de error
     }
   };
 
-  const deleteUser = async (id) => {
+  const eliminarUsuario = async (id) => {
     const token = localStorage.getItem("token");
-
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
         confirmButton: "btn btn-success",
@@ -59,12 +58,12 @@ const InicioAdmin = () => {
         if (result.isConfirmed) {
           try {
             const res = await fetch(
-              `http://localhost:4000/apiStock/usuario/${id}`,
+              `http://localhost:8080/apiStock/usuario/${id}`,
               {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",
-                  authorization: `Bearer ${token}`,
+                  Authorization: `Bearer ${token}`,
                 },
               }
             );
@@ -78,7 +77,7 @@ const InicioAdmin = () => {
                 showConfirmButton: false,
                 timer: 1370,
               });
-              setRefreshUsers(true); // Refrescar los usuarios
+              setRefreshUsers(!refreshUsers); // Cambia el estado para refrescar la lista
             } else {
               const errorText = await res.text();
               throw new Error(errorText);
@@ -114,14 +113,15 @@ const InicioAdmin = () => {
   return (
     <>
       <Menu />
-      <Table responsive="md" className="m-5">
+      <Table responsive className="m-5">
         <thead>
           <tr>
             <th>#</th>
             <th>Nombres</th>
             <th>Apellidos</th>
             <th>Rol</th>
-            <th>Obra Social</th>
+            <th>Email</th>
+            <th>Pago</th>
             <th>Acción</th>
           </tr>
         </thead>
@@ -134,17 +134,18 @@ const InicioAdmin = () => {
                 <td>{usuario.nombres}</td>
                 <td>{usuario.apellido}</td>
                 <td>{usuario.rol}</td>
-                <td>{usuario.obraSocial}</td>
+                <td>{usuario.email}</td>
+                <td>{usuario.pago}</td>
                 <td>
                   <Link
-                    to={`/editUser/${usuario._id}`}
+                    to={`/EditarUsuario/${usuario._id}`}
                     className="btn btn-warning"
                   >
                     Editar
                   </Link>
                   <button
                     className="btn btn-danger mx-2"
-                    onClick={() => deleteUser(usuario._id)}
+                    onClick={() => eliminarUsuario(usuario._id)}
                   >
                     Borrar
                   </button>
@@ -153,7 +154,7 @@ const InicioAdmin = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="text-center">
+              <td colSpan="7" className="text-center">
                 No se encontraron usuarios
               </td>
             </tr>

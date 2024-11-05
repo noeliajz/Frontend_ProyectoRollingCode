@@ -12,12 +12,12 @@ const ProductosAdmin = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch("http://localhost:4000/apiStock/producto", {
+      const res = await fetch("http://localhost:8080/apiStock/producto", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-        },
+        }
       });
 
       if (!res.ok) {
@@ -59,7 +59,7 @@ const ProductosAdmin = () => {
         if (result.isConfirmed) {
           try {
             const res = await fetch(
-              `http://localhost:4000/apiStock/producto/${id}`,
+              `http://localhost:8080/apiStock/producto/${id}`,
               {
                 method: "DELETE",
                 headers: {
@@ -114,7 +114,7 @@ const ProductosAdmin = () => {
   return (
     <>
       <Menu />
-      <Table responsive="md" className="m-5">
+      <Table responsive className="m-5">
         <thead>
           <tr>
             <th>#</th>
@@ -143,7 +143,7 @@ const ProductosAdmin = () => {
                 </td>
                 <td>
                   <Link
-                    to={`/editProduct/${producto._id}`}
+                    to={`/EditarProducto/${producto._id}`}
                     className="btn btn-warning"
                   >
                     Editar
