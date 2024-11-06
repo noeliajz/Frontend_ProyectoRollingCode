@@ -104,10 +104,10 @@ const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
   }, [formInputs]);
 
   return (
-    <Container fluid style={{ background: "#E1F7F5" }}>
+    <Container fluid style={{ background: "#FFFFFF" }}>
       <Row>
-        <Col className="d-flex justify-content-center">
-          <Form className="p-5 w-50 text-center">
+        <Col className="d-flex justify-content-center" sm={12} md={10} lg={10}>
+          <Form className="p-5 text-center">
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Ingresar correo electrónico</Form.Label>
               <Form.Control
@@ -133,7 +133,7 @@ const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
               />
             </Form.Group>
             <Button
-              style={{ background: "#0E46A3", color: "#E1F7F5" }}
+              style={{ background: "#000000", color: "#CCFF01" }}
               onClick={handleClick}
               type="submit"
             >

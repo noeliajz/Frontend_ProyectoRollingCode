@@ -57,9 +57,12 @@ const EditarUsuario = () => {
       formValues.pago === ""
     ) {
       Swal.fire({
+        position: "top-center",
         icon: "error",
-        title: "Oops...",
-        text: "Formulario Vacio!",
+        title: "Oops",
+        text: "Formulario vacio",
+        showConfirmButton: false,
+        timer: 1350,
       });
       return;
     }

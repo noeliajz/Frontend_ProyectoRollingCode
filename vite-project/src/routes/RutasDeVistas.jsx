@@ -12,6 +12,8 @@ import CuentasAdmin from '../pages/CuentasAdmin'
 import EditarUsuario from '../pages/EditarUsuario'
 import EditarProducto from '../pages/EditarProducto'
 import Carrito from '../pages/Carrito'
+import CrearUsuario from '../pages/CrearUsuario'
+import CrearProducto from '../pages/CrearProducto'
 
 const RutasDeVistas = () => {
   return (
@@ -29,8 +31,9 @@ const RutasDeVistas = () => {
     <Route path='/EditarUsuario/:id' element={<EditarUsuario/>}/>
     <Route path='/EditarProducto/:id' element={<EditarProducto/>}/>
     <Route path='/Carrito' element={<Carrito/>}/>
-
-   
+    <Route path='/CrearUsuario' element={<CrearUsuario/>}/>
+    <Route path='/CrearProducto' element={<CrearProducto/>}/>
+    
     </Routes>
     </>
   )
