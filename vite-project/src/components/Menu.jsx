@@ -45,34 +45,33 @@ const Menu = () => {
                 <>
                   <NavLink
                     end
-                    className="nav-item nav-link"
+                    className="nav-item nav-link fs-4"
                     to="/"
-                    style={{ color: "#FFFFFF" }} className="fs-4"
+                    style={{ color: "#FFFFFF" }} 
                   >
                     Inicio
                   </NavLink>
                   <NavLink
                     end
-                    className="nav-item nav-link"
+                    className="nav-item nav-link fs-4"
                     to="/ProductosAdmin"
-                    style={{ color: "#FFFFFF" }} className="fs-4"
+                    style={{ color: "#FFFFFF" }} 
                   >
                     Productos
                   </NavLink>
                   <NavLink
                     end
-                    className="nav-item nav-link"
+                    className="nav-item nav-link fs-4"
                     to="/InicioAdmin"
-                    style={{ color: "#FFFFFF" }} className="fs-4"
+                    style={{ color: "#FFFFFF" }} 
                   >
                     Usuarios
                   </NavLink>
                   <NavLink
                     end
-                    className="nav-item nav-link"
+                    className="nav-item nav-link fs-4"
                     to="/cuentasAdmin"
-                    style={{ color: "#FFFFFF" }} className="fs-4"
-                  >
+                    style={{ color: "#FFFFFF" }} >
                     Cuentas
                   </NavLink>
                   <Nav.Link

@@ -13,7 +13,9 @@ import CardInicioCategoria from "../components/CardInicioCategoria";
 
 const InicioUsuario = () => {
   const [productosTodos, setProductos] = useState([]);
+  const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [refreshProductos, setRefreshProductos] = useState(false);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para el término de búsqueda
 
   useEffect(() => {
     obtenerTodosLosProductos();
@@ -39,14 +41,29 @@ const InicioUsuario = () => {
       const data = await res.json();
       console.log("Productos obtenidos:", data); // Verifica la estructura de los datos
       setProductos(data.productos || []); // Asegúrate de que sea un array
+      setProductosFiltrados(data.productos || []); // Inicializa los productos filtrados con todos los productos
     } catch (error) {
       console.error("Error fetching products:", error);
       setProductos([]); // Asegúrate de que siempre sea un array
+      setProductosFiltrados([]); // En caso de error, también vaciar los productos filtrados
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    // Filtra los productos según el término de búsqueda
+    const productosFiltrados = productosTodos.filter((producto) =>
+      producto.nombre.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setProductosFiltrados(productosFiltrados);
+  };
+
   const handleClick = (id) => {
-    const productoSeleccionado = productosTodos.find((producto) => producto._id === id);
+    const productoSeleccionado = productosFiltrados.find((producto) => producto._id === id);
     let carritoActual = JSON.parse(localStorage.getItem("carrito")) || [];
   
     // Agregar el producto al carrito si no existe o actualizar cantidad si ya está en carrito
@@ -68,7 +85,21 @@ const InicioUsuario = () => {
       timer: 1500,
     });
   };
-  
+
+  const handleSearchChangeCat = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const handleSearchSubmitCat = (e) => {
+    e.preventDefault();
+    // Filtra los productos según el término de búsqueda
+    const productosFiltrados = productosTodos.filter((producto) =>
+      producto.categoria.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setProductosFiltrados(productosFiltrados);
+  };
+
+
   return (
     <>
       <Menu />
@@ -81,13 +112,31 @@ const InicioUsuario = () => {
           className="d-block w-45 fluid"
           height={250}
         />
-        <Form inline className="p-5">
+        <Form inline className="p-5" onSubmit={handleSearchSubmitCat}> {/* Envolvemos el formulario en un submit */}
           <Row>
             <Col xs="auto">
               <Form.Control
                 type="text"
-                placeholder=""
-                className=" mr-sm-2"
+                placeholder="Ingresar categoria"
+                className="mr-sm-2"
+                value={searchTerm} // Vinculamos el input con el estado
+                onChange={handleSearchChangeCat} // Actualizamos el término de búsqueda
+              />
+            </Col>
+            <Col xs="auto">
+              <Button type="submit">Buscar</Button>
+            </Col>
+          </Row>
+        </Form>
+        <Form inline className="p-5" onSubmit={handleSearchSubmit}> {/* Envolvemos el formulario en un submit */}
+          <Row>
+            <Col xs="auto">
+              <Form.Control
+                type="text"
+                placeholder="Nombre del producto..."
+                className="mr-sm-2"
+                value={searchTerm} // Vinculamos el input con el estado
+                onChange={handleSearchChange} // Actualizamos el término de búsqueda
               />
             </Col>
             <Col xs="auto">
@@ -103,75 +152,41 @@ const InicioUsuario = () => {
         height={300} 
       />
       <div
-          className="d-flex flex-wrap justify-content-around"  style={{paddingBottom:"210px"}}
-        >
-          {Array.isArray(productosTodos) && productosTodos.length > 0 ? (
-            productosTodos.map((producto, index) => (
-              <Card
-                key={producto._id}
-                style={{ width: "18rem", margin: "10px" }} className="text-center"
-              >
-                <Card.Img
-                  variant="top"
-                  src={producto.imagen}
-                  alt={producto.nombre}
-                />
-                <Card.Body>
-                  <Card.Title>{producto.nombre}</Card.Title>
-                  <Card.Text>
-                    Precio: {producto.precio}
-                    <br />
-                    Descripción: {producto.descripcion}
-                  </Card.Text>
-                  <button
-                    className="btn " style={{background:"#000000", color:"#CCFF01"}}
-                    onClick={() => handleClick(producto._id)}
-                  >
-                    Agregar al carrito
-                  </button>
-                </Card.Body>
-              </Card>
-            ))
-          ) : (
-            <p>No se encontraron productos.</p>
-          )}
-        </div>
+        className="d-flex flex-wrap justify-content-around" style={{ paddingBottom: "210px" }}
+      >
+        {Array.isArray(productosFiltrados) && productosFiltrados.length > 0 ? (
+          productosFiltrados.map((producto) => (
+            <Card
+              key={producto._id}
+              style={{ width: "18rem", margin: "10px" }} className="text-center"
+            >
+              <Card.Img
+                variant="top"
+                src={producto.imagen}
+                alt={producto.nombre}
+              />
+              <Card.Body>
+                <Card.Title>{producto.nombre}</Card.Title>
+                <Card.Text>
+                  Precio: {producto.precio}
+                  <br />
+                  Descripción: {producto.descripcion}
+                </Card.Text>
+                <button
+                  className="btn "
+                  style={{ background: "#000000", color: "#CCFF01" }}
+                  onClick={() => handleClick(producto._id)}
+                >
+                  Agregar al carrito
+                </button>
+              </Card.Body>
+            </Card>
+          ))
+        ) : (
+          <p>No se encontraron productos.</p>
+        )}
+      </div>
       <CardInicioCategoria />
-        <div
-          className="d-flex flex-wrap justify-content-around"
-          style={{ background: "#2F2F3C" }}
-        >
-          {Array.isArray(productosTodos) && productosTodos.length > 0 ? (
-            productosTodos.map((producto, index) => (
-              <Card
-                key={producto._id}
-                style={{ width: "18rem", margin: "10px" }} className="text-center"
-              >
-                <Card.Img
-                  variant="top"
-                  src={producto.imagen}
-                  alt={producto.nombre}
-                />
-                <Card.Body>
-                  <Card.Title>{producto.nombre}</Card.Title>
-                  <Card.Text>
-                    Precio: {producto.precio}
-                    <br />
-                    Descripción: {producto.descripcion}
-                  </Card.Text>
-                  <button
-                    className="btn " style={{background:"#000000", color:"#CCFF01"}}
-                    onClick={() => handleClick(producto._id)}
-                  >
-                    Agregar al carrito
-                  </button>
-                </Card.Body>
-              </Card>
-            ))
-          ) : (
-            <p>No se encontraron productos.</p>
-          )}
-        </div>
       <Footer />
     </>
   );

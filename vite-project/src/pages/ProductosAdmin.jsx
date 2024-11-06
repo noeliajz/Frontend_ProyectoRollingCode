@@ -114,6 +114,9 @@ const ProductosAdmin = () => {
   return (
     <>
       <Menu />
+      <Link to={'/CrearProducto'} className="btn m-3" style={{background:"#CCFF01"}}>
+        Agregar
+      </Link>
       <Table responsive className="m-5">
         <thead>
           <tr>

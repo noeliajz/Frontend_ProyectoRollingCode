@@ -1,70 +1,143 @@
-import React from "react";
-import Container from "react-bootstrap/esm/Container";
-import Row from "react-bootstrap/esm/Row";
-import Col from "react-bootstrap/esm/Col";
-import Button from "react-bootstrap/Button";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
-import { useForm } from "react-hook-form";
 
 const FormularioRegistrar = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm();
-  const onSubmit = (usuario) => {
-    console.log(usuario);
-    reset();
+  const [formInputs, setFormInputs] = useState({
+    nombres: "",
+    apellido: "",
+    email: "",
+    contrasenia: "",
+    repeatContrasenia: ""
+  });
+
+  const handleChange = (ev) => {
+    const { name, value } = ev.target;
+    setFormInputs({ ...formInputs, [name]: value });
   };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    // Verificación de contraseñas coincidentes
+    if (formInputs.contrasenia !== formInputs.repeatContrasenia) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+
+    try {
+      // Realiza la solicitud POST al backend
+      const res = await fetch("http://localhost:8080/apiStock/usuario", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombres: formInputs.nombres,
+          apellido: formInputs.apellido,
+          email: formInputs.email,
+          contrasenia: formInputs.contrasenia,
+        }),
+      });
+
+      // Comprobamos si la respuesta fue exitosa
+      if (res.ok) {
+        const data = await res.json();
+        alert("Registro exitoso");
+        setTimeout(() => {
+          location.href = "/IniciarSesion"; // Redirigir después de 3 segundos
+        }, 3000);
+      } else {
+        const data = await res.json();
+        const errorMessage = data.message || "Ocurrió un error desconocido. Intente nuevamente.";
+        alert("Error en el registro: " + errorMessage);
+      }
+    } catch (error) {
+      alert("Ocurrió un error en el servidor: " + error.message);
+    }
+  };
+
   return (
     <>
-      <Container className="m-5" style={{ background: "#E8FCF6" }}>
-        <Row className="justify-content-center">
-          <Col sm={12} md={8} lg={9}>
-            <Form onSubmit={handleSubmit(onsubmit)} className="text-center">
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Ingresar email</Form.Label>
-                <Form.Control type="email" placeholder="" 
-                {...register("email", {
-                  required: "El email es un dato obligatorio",
-                  pattern: {
-                    value:
-                      /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i,
-                    message:
-                      "El email debe tener el siguiente formato mail@ejemplo.com",
-                  },
-                })}
-                />
-                <Form.Text className="text-danger">
-                  {errors.email?.message}
-                </Form.Text>
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Ingresar contraseña</Form.Label>
-                <Form.Control type="password" placeholder=""
-                {...register("password", {
-                  required: "La password es un dato obligatorio",
-                  pattern: {
-                    value:
-                      /^(?=.*[a-z])(?=.*[a-z])(?=.*\d)[a-z\d\w\W]{4,20}$/,
-                    message:
-                      "La contraseña debe tener entre 4 y 20 caracteres, debe tener al menos 1 letra, 1 número y puede incluir o no caracteres especiales",
-                  },
-                })}
-                />
-                <Form.Text className="text-danger">
-                  {errors.password?.message}
-                </Form.Text>
-              </Form.Group>
-              <Button variant="primary" type="submit" className="m-3">
-                Guardar
-              </Button>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+      <div className="d-flex py-5 justify-content-center">
+        <form className="w-50" onSubmit={handleSubmit}>
+          <h2 className="form_tittle">Crea una Cuenta</h2>
+          <div className="form_container">
+            <div className="mb-3">
+              <label htmlFor="nombres" className="form-label">
+                Ingresar nombres
+              </label>
+              <input
+                type="text"
+                name="nombres"
+                onChange={handleChange}
+                className="form-control"
+                id="nombres"
+                placeholder=" "
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="apellido" className="form-label">
+                Ingresar apellidos
+              </label>
+              <input
+                type="text"
+                name="apellido"
+                onChange={handleChange}
+                className="form-control"
+                id="apellido"
+                placeholder=" "
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Ingresar email
+              </label>
+              <input
+                type="email"
+                name="email"
+                onChange={handleChange}
+                className="form-control"
+                id="email"
+                placeholder=" "
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="contrasenia" className="form-label">
+                Ingresar contraseña
+              </label>
+              <input
+                type="password"
+                name="contrasenia"
+                onChange={handleChange}
+                className="form-control"
+                id="contrasenia"
+                placeholder=" "
+                required
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="repeatContrasenia" className="form-label">
+                Repetir contraseña
+              </label>
+              <input
+                type="password"
+                name="repeatContrasenia"
+                onChange={handleChange}
+                className="form-control"
+                id="repeatContrasenia"
+                placeholder=" "
+                required
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Enviar
+            </button>
+          </div>
+        </form>
+      </div>
     </>
   );
 };

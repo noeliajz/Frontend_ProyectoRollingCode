@@ -4,26 +4,26 @@ import Swal from "sweetalert2";
 import Menu from "../components/menu";
 import { Container, Row, Col } from "react-bootstrap";
 
-
-const EditarProducto = () => {
+const CrearUsuario = () => {
   const params = useParams();
+
   const navigate = useNavigate();
   const [inputCheckName, setInputCheckName] = useState(false);
   const [formValues, setFormValues] = useState({
-    nombre: "",
-    precio: "",
-    categoria: "",
-    descripcion: "",
-    fecha: "",
-    imagen: ""
+    nombres: "",
+    apellido: "",
+    rol: "",
+    email: "",
+    contrasenia: "",
+    pago: ""
   });
 
   const ObtenerUnUsuario = async () => {
-    const token = JSON.parse(localStorage.getItem("token"));
+    const token = localStorage.getItem("token"); 
     const res = await fetch(
-      `http://localhost:8080/apiStock/producto/${params.id}`,
+      `http://localhost:8080/apiStock/usuario`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           "content-type": "application/json",
           authorization: `Bearer ${token}`,
@@ -31,35 +31,28 @@ const EditarProducto = () => {
       }
     );
 
-    const { getProducto } = await res.json();
+    const { getUsuario } = await res.json();
     setFormValues({
-      nombre: getProducto.nombre,
-      precio: getProducto.precio,
-      categoria: getProducto.categoria,
-      descripcion: getProducto.descripcion,
-      fecha: getProducto.fecha,
-      imagen: getProducto.imagen,
+      nombres: getUsuario.nombres,
+      apellido: getUsuario.apellido,
+      rol: getUsuario.rol,
+      email: getUsuario.email,
+      contrasenia: getUsuario.contrasenia,
+      pago: getUsuario.pago
     });
-  };
-
-  const handleChange = (ev) => {
-    setFormValues({ ...formValues, [ev.target.name]: ev.target.value });
-    if (formValues.name) {
-      setInputCheckName(false);
-    }
   };
 
   const handleClick = async (ev) => {
     ev.preventDefault();
     const token = localStorage.getItem("token");
-  
+
     if (
-      formValues.nombre === "" &&
-      formValues.precio === "" &&
-      formValues.categoria === "" &&
-      formValues.descripcion === "" &&
-      formValues.fecha === "" &&
-      formValues.imagen === ""
+      formValues.nombres === "" &&
+      formValues.apellido === "" &&
+      formValues.rol === "" &&
+      formValues.email === "" &&
+      formValues.contrasenia === "" &&
+      formValues.pago === ""
     ) {
       Swal.fire({
         position: "top-center",
@@ -71,56 +64,58 @@ const EditarProducto = () => {
       });
       return;
     }
-  
+
     try {
-      const res = await fetch(`http://localhost:8080/apiStock/producto/${params.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formValues),
-      });
-  
+      const res = await fetch(
+        `http://localhost:8080/apiStock/usuario`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(formValues),
+        }
+      );
       if (!res.ok) {
         const errorText = await res.text();
         throw new Error(`Error en la solicitud: ${errorText}`);
       }
-  
-      // Comprueba que el contenido es JSON antes de parsear
       const contentType = res.headers.get("content-type");
       if (!contentType || !contentType.includes("application/json")) {
         throw new Error("La respuesta no es JSON");
       }
-  
       const resUpdateUser = await res.json();
       if (resUpdateUser.status === 200) {
         Swal.fire("Usuario editado correctamente!", "success");
       }
       setFormValues({
-        nombre: "",
-        precio: "",
-        categoria: "",
-        descripcion: "",
-        fecha: "",
-        imagen: ""
+        nombres: "",
+        apellido: "",
+        rol: "",
+        email: "",
+        contrasenia: "",
+        pago: "",
       });
       setTimeout(() => {
         navigate("/inicioAdmin");
       }, 1000);
-  
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Ocurrió un error",
         text: error.message,
       });
-      console.error("Error al actualizar producto:", error);
+      console.error("Error al actualizar usuario:", error);
     }
   };
-
-
-
+  
+  const handleChange = (ev) => {
+    setFormValues({ ...formValues, [ev.target.name]: ev.target.value });
+    if (formValues.name) {
+      setInputCheckName(false);
+    }
+  };
 
   useEffect(() => {
     ObtenerUnUsuario();
@@ -129,19 +124,19 @@ const EditarProducto = () => {
   return (
     <>
       <Menu />
-      <Container fluid style={{ background: "#E1F7F5" }}>
+      <Container fluid style={{ background: "#FFFFFF" }}>
         <Row>
           <Col className="d-flex" sm={12} md={10} lg={10}>
             <section className="conteiner w-100 d-flex justify-content-center pb-5 styleUserAdminPage">
               <form className="text-center p-5 w-50 ">
-                <div >
+                <div>
                   <label for="exampleInputEmail1" className="form-label">
-                    Ingresar Nombre
+                    Ingresar Nombres
                   </label>
                   <input
                     type="text"
-                    name="nombre"
-                    value={formValues.nombre}
+                    name="nombres"
+                    value={formValues.nombres}
                     className={
                       inputCheckName
                         ? "form-control is-invalid"
@@ -152,14 +147,14 @@ const EditarProducto = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div >
+                <div>
                   <label for="exampleInputEmail1" className="form-label">
-                    Ingresar Precio
+                    Ingresar Apellido
                   </label>
                   <input
-                    type="number"
-                    name="precio"
-                    value={formValues.precio}
+                    type="text"
+                    name="apellido"
+                    value={formValues.apellido}
                     className={
                       inputCheckName
                         ? "form-control is-invalid"
@@ -170,14 +165,14 @@ const EditarProducto = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div >
+                <div>
                   <label for="exampleInputPassword1" className="form-label">
-                    Ingresar categoria
+                    Ingresar Rol
                   </label>
                   <input
                     type="text"
-                    name="categoria"
-                    value={formValues.categoria}
+                    name="rol"
+                    value={formValues.rol}
                     className={
                       inputCheckName
                         ? "form-control is-invalid"
@@ -187,14 +182,14 @@ const EditarProducto = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div >
+                <div>
                   <label for="exampleInputPassword1" className="form-label">
-                    Ingresar descripción
+                    Ingresar Email
                   </label>
                   <input
-                    type="text"
-                    name="descripcion"
-                    value={formValues.descripcion}
+                    type="email"
+                    name="email"
+                    value={formValues.email}
                     className={
                       inputCheckName
                         ? "form-control is-invalid"
@@ -204,13 +199,13 @@ const EditarProducto = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div >
+                <div>
                   <label for="exampleInputPassword1" className="form-label">
-                    Ingresar Fecha en el formato AAAA/MM/DD
+                    Ingresar Contraseña
                   </label>
                   <input
-                    type="text"
-                    name="fecha"
+                    type="password"
+                    name="contrasenia"
                     value={formValues.contrasenia}
                     className={
                       inputCheckName
@@ -221,14 +216,14 @@ const EditarProducto = () => {
                     onChange={handleChange}
                   />
                 </div>
-                <div >
+                <div>
                   <label for="exampleInputPassword1" className="form-label">
-                    Ingresar dirección de la imagen
+                    Ingresar Pago
                   </label>
                   <input
                     type="text"
-                    name="imagen"
-                    value={formValues.imagen}
+                    name="pago"
+                    value={formValues.pago}
                     className={
                       inputCheckName
                         ? "form-control is-invalid"
@@ -238,7 +233,6 @@ const EditarProducto = () => {
                     onChange={handleChange}
                   />
                 </div>
-
                 <button
                   type="submit"
                   className="btn mt-4"
@@ -256,4 +250,4 @@ const EditarProducto = () => {
   );
 };
 
-export default EditarProducto;
+export default CrearUsuario;

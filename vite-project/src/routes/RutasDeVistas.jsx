@@ -12,25 +12,28 @@ import CuentasAdmin from '../pages/CuentasAdmin'
 import EditarUsuario from '../pages/EditarUsuario'
 import EditarProducto from '../pages/EditarProducto'
 import Carrito from '../pages/Carrito'
+import CrearUsuario from '../pages/CrearUsuario'
+import CrearProducto from '../pages/CrearProducto'
 
 const RutasDeVistas = () => {
   return (
     <>
     <Routes>
     <Route path='/' element={<Inicio/>}/>
-{/*     <Route path='*' element={<PaginaError404/>}/>
- */}    <Route path='/Registrar' element={<Registrar/>}/>
+    <Route path='*' element={<PaginaError404/>}/>
+    <Route path='/Registrar' element={<Registrar/>}/>
     <Route path='/IniciarSesion' element={<IniciarSesion/>}/>
     <Route path='/InicioAdmin' element={<InicioAdmin/>}/>
     <Route path='/ProductosAdmin' element={<ProductosAdmin/>}/>
     <Route path='/Contacto' element={<Contacto/>}/>
     <Route path='/InicioUsuario' element={<InicioUsuario/>}/>
     <Route path='/CuentasAdmin' element={<CuentasAdmin/>}/>
-    <Route path='/EditarUsuario' element={<EditarUsuario/>}/>
-    <Route path='/EditarProducto' element={<EditarProducto/>}/>
+    <Route path='/EditarUsuario/:id' element={<EditarUsuario/>}/>
+    <Route path='/EditarProducto/:id' element={<EditarProducto/>}/>
     <Route path='/Carrito' element={<Carrito/>}/>
-
-   
+    <Route path='/CrearUsuario' element={<CrearUsuario/>}/>
+    <Route path='/CrearProducto' element={<CrearProducto/>}/>
+    
     </Routes>
     </>
   )

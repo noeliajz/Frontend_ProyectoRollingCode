@@ -62,7 +62,7 @@ const CuentasAdmin = () => {
                 <td>{usuario.pago}</td>
                 <td>
                   <Link
-                    to={'/*'}
+                    to={'/PaginaError404'}
                     className="btn btn-warning"
                   >
                     Suspender
