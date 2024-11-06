@@ -17,7 +17,7 @@ const ProductosAdmin = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-        }
+        },
       });
 
       if (!res.ok) {
@@ -114,7 +114,11 @@ const ProductosAdmin = () => {
   return (
     <>
       <Menu />
-      <Link to={'/CrearProducto'} className="btn m-3" style={{background:"#CCFF01"}}>
+      <Link
+        to={"/CrearProducto"}
+        className="btn m-3"
+        style={{ background: "#CCFF01" }}
+      >
         Agregar
       </Link>
       <Table responsive className="m-5">

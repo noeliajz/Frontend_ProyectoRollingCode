@@ -122,7 +122,7 @@ const CrearProducto = () => {
     return (
       <>
         <Menu />
-        <Container fluid style={{ background: "#E1F7F5" }}>
+        <Container fluid style={{ background: "#FFFFFF" }}>
           <Row>
             <Col className="d-flex" sm={12} md={10} lg={10}>
               <section className="conteiner w-100 d-flex justify-content-center pb-5 styleUserAdminPage">
