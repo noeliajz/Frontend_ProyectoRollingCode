@@ -14,6 +14,7 @@ import EditarProducto from '../pages/EditarProducto'
 import Carrito from '../pages/Carrito'
 import CrearUsuario from '../pages/CrearUsuario'
 import CrearProducto from '../pages/CrearProducto'
+import QuienesSomos from '../pages/QuienesSomos'
 
 const RutasDeVistas = () => {
   return (
@@ -33,7 +34,8 @@ const RutasDeVistas = () => {
     <Route path='/Carrito' element={<Carrito/>}/>
     <Route path='/CrearUsuario' element={<CrearUsuario/>}/>
     <Route path='/CrearProducto' element={<CrearProducto/>}/>
-    
+    <Route path='/QuienesSomos' element={<QuienesSomos/>}/>
+
     </Routes>
     </>
   )

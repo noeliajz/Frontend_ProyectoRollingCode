@@ -31,7 +31,7 @@ const Menu = () => {
     <>
       <Navbar expand="lg" style={{ background: "#2F2F3C" }}>
         <Container fluid>
-          <Navbar.Brand as={Link} to="/" style={{ color: "#D2DE32" }}>
+          <Navbar.Brand as={Link} to="/" style={{ color: "#CCFF01" }}>
             Control de stock
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbarScroll" />
@@ -87,6 +87,12 @@ const Menu = () => {
             <Nav>
               {rol !== "admin" && rol !== "user" && (
                 <>
+                  <Nav.Link href="/QuienesSomos" style={{ color: "#FFFFFF" }} className="fs-4">
+                    Quienes somos
+                  </Nav.Link>
+                  <Nav.Link href="/Contacto" style={{ color: "#FFFFFF" }} className="fs-4">
+                    Contacto
+                  </Nav.Link>
                   <Nav.Link href="/Registrar" style={{ color: "#FFFFFF" }} className="fs-4">
                     Registrarse
                   </Nav.Link>

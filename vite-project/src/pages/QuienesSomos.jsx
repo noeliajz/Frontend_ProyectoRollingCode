@@ -6,11 +6,11 @@ import Menu from "../components/Menu";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
 
-const Contacto = () => {
+const QuienesSomos = () => {
   return (
     <>
       <Menu />
-      <Container style={{margin:"100px"}}>
+      <Container  style={{margin:"100px"}}>
         <Row className="text-center">
           <Col sm={12} md={9} lg={12}>
             <h3>Contacto:</h3>
@@ -19,7 +19,7 @@ const Contacto = () => {
               www.linkedin.com/in/zelayanoeliajudith
             </Link>
             <h3>Github:</h3>
-            <Link  to="https://github.com/noeliajz">
+            <Link to="https://github.com/noeliajz">
               https://github.com/noeliajz
             </Link>
           </Col>
@@ -30,4 +30,4 @@ const Contacto = () => {
   );
 };
 
-export default Contacto;
+export default QuienesSomos;
