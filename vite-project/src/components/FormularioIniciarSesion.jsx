@@ -1,9 +1,7 @@
-import { Form, Button, Container, Card } from "react-bootstrap";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import Row from "react-bootstrap/esm/Row";
-import Col from "react-bootstrap/esm/Col";
 
 const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
   const navigate = useNavigate();
@@ -17,87 +15,81 @@ const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
   const [contraseniaInput, setContraseniaInput] = useState(false);
 
   const handleChange = (ev) => {
-    setFormInputs({ ...formInputs, [ev.target.name]: ev.target.value });
+    const { name, value } = ev.target;
 
-    if (ev.target.name === "email" && ev.target.value) {
-      setUsuarioInput(false);
-    } else if (ev.target.name === "contrasenia" && ev.target.value) {
-      setContraseniaInput(false);
+    if (name === "email" && value.length <= 25) {
+      setFormInputs({ ...formInputs, [name]: value });
+      setUsuarioInput(value.length < 5);
+    } else if (name === "contrasenia" && value.length <= 25) {
+      setFormInputs({ ...formInputs, [name]: value });
+      setContraseniaInput(value.length < 4);
     }
   };
 
   const handleClick = async (ev) => {
     ev.preventDefault();
-    if (formInputs.email) {
-      if (formInputs.contrasenia) {
-        setUsuarioInput(false);
-        setContraseniaInput(false);
-        try {
-          const res = await fetch("http://localhost:8080/apiStock/usuario/iniciarSesion", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              email: formInputs.email,
-              contrasenia: formInputs.contrasenia,
-            }),
-          });
+    if (formInputs.email && formInputs.contrasenia) {
+      try {
+        const res = await fetch("http://localhost:8080/apiStock/usuario/iniciarSesion", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: formInputs.email,
+            contrasenia: formInputs.contrasenia,
+          }),
+        });
   
-          const data = await res.json();
+        const data = await res.json();
   
-          if (res.ok) {
-            if (data.usuarioExist) {
-              localStorage.setItem("token", data.usuarioExist.token);
-              localStorage.setItem("rol", data.usuarioExist.rol);
-              localStorage.setItem("nombres", data.usuarioExist.nombres);
+        if (res.ok) {
+          if (data.usuarioExist) {
+            localStorage.setItem("token", data.usuarioExist.token);
+            localStorage.setItem("rol", data.usuarioExist.rol);
+            localStorage.setItem("nombres", data.usuarioExist.nombres);
   
-              if (data.usuarioExist.rol === "admin") {
-                navigate("/InicioAdmin");
-              } else if (data.usuarioExist.rol === "user") {
-                navigate("/");
-              }
-            } else {
-              Swal.fire({
-                position: "center",
-                icon: "error",
-                title: "Error en la solicitud de login",
-                text: "Usuario no encontrado o credenciales incorrectas",
-                showConfirmButton: false,
-                timer: 1380,
-              });
+            if (data.usuarioExist.rol === "admin") {
+              navigate("/InicioAdmin");
+            } else if (data.usuarioExist.rol === "user") {
+              navigate("/");
             }
           } else {
-            // Maneja los errores específicos según el código de estado
             Swal.fire({
               position: "center",
               icon: "error",
-              title: "Error",
-              text: data.mensaje || "Usuario o contraseña incorrectos",
+              title: "Error en la solicitud de login",
+              text: "Usuario no encontrado o credenciales incorrectas",
               showConfirmButton: false,
               timer: 1380,
             });
           }
-        } catch (error) {
-          console.error("Error en la solicitud de login:", error);
+        } else {
           Swal.fire({
             position: "center",
             icon: "error",
             title: "Error",
-            text: "Ocurrió un error al iniciar sesión",
+            text: data.mensaje || "Usuario o contraseña incorrectos",
             showConfirmButton: false,
             timer: 1380,
           });
         }
-      } else {
-        setContraseniaInput(true);
+      } catch (error) {
+        console.error("Error en la solicitud de login:", error);
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Error",
+          text: "Ocurrió un error al iniciar sesión",
+          showConfirmButton: false,
+          timer: 1380,
+        });
       }
     } else {
       setUsuarioInput(true);
       setContraseniaInput(true);
     }
   };
-  
 
   useEffect(() => {
     console.log(formInputs);
@@ -113,24 +105,36 @@ const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
               <Form.Control
                 name="email"
                 onChange={handleChange}
+                value={formInputs.email}
                 className={
                   usuarioInput ? "form-control is-invalid" : "form-control"
                 }
                 type="email"
-                placeholder=""
+                placeholder="Email entre 5 y 25 caracteres"
               />
+              {usuarioInput && (
+                <Form.Text className="text-danger">
+                  El email debe tener entre 5 y 25 caracteres.
+                </Form.Text>
+              )}
             </Form.Group>
-            <Form.Group className="mb-3" controlId="formBasiccontraseniaword">
+            <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Ingresar contraseña</Form.Label>
               <Form.Control
                 name="contrasenia"
                 onChange={handleChange}
+                value={formInputs.contrasenia}
                 className={
                   contraseniaInput ? "form-control is-invalid" : "form-control"
                 }
                 type="password"
-                placeholder=""
+                placeholder="Contraseña entre 4 y 25 caracteres"
               />
+              {contraseniaInput && (
+                <Form.Text className="text-danger">
+                  La contraseña debe tener entre 4 y 25 caracteres.
+                </Form.Text>
+              )}
             </Form.Group>
             <Button
               style={{ background: "#000000", color: "#CCFF01" }}
