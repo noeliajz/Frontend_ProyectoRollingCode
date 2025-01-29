@@ -110,11 +110,11 @@ const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
                   usuarioInput ? "form-control is-invalid" : "form-control"
                 }
                 type="email"
-                placeholder="Email entre 5 y 25 caracteres"
+                placeholder=""
               />
               {usuarioInput && (
                 <Form.Text className="text-danger">
-                  El email debe tener entre 5 y 25 caracteres.
+                  El email debe tener entre 3 y  25 caracteres
                 </Form.Text>
               )}
             </Form.Group>
@@ -128,7 +128,7 @@ const FormularioIniciarSesion = ({ setUsuarioLogueado }) => {
                   contraseniaInput ? "form-control is-invalid" : "form-control"
                 }
                 type="password"
-                placeholder="Contraseña entre 4 y 25 caracteres"
+                placeholder=""
               />
               {contraseniaInput && (
                 <Form.Text className="text-danger">
